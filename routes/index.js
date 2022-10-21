@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 
-const publicAddress = "mj4CNS8gScsNDhZDqFCGJfghEMHRpvfg9t";
+const publicAddress = "0xEcc179a1b25Dad72D022CD830F9d26221fcA8A81";
 
 router.get('/', function(req, res) {
     res.render('index', {

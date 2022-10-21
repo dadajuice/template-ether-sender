@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: "./docker/nodejs/Dockerfile"
-    container_name: "bitcoin_webserver"
+    container_name: "ether_webserver"
     restart: 'always'
     ports:
       - 80:3000

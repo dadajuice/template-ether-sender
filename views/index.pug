@@ -18,14 +18,14 @@ html
         i.fa.fa-wallet.pe-2
         =address
       div.ms-4.align-items-center.d-flex
-        i.fa-brands.fa-bitcoin.pe-2
-        =balance + " BTC"
+        i.fa-brands.fa-ethereum.pe-2
+        =balance + " ETH"
     .d-flex.flex-column.justify-content-center.w-100.h-100
       .d-flex.flex-column.justify-content-center.align-items-center
         h1.fw-light.text-white.m-0
           .text-center.mb-2(style="font-size: 6rem;")
-            i.fa-brands.fa-bitcoin
-          | Send Bitcoin
+            i.fa-brands.fa-ethereum
+          | Send Ethereum
 
         if error != ""
           br
@@ -41,7 +41,7 @@ html
           .form-floating.mb-1.mt-3
             input#amount.form-control(type='text' placeholder='Enter amount' name='amount' value=balance)
             label(for='amount') Amount to send
-          small.form-text.text-white!="You have <b>" + balance + "</b> BTC available."
+          small.form-text.text-white!="You have <b>" + balance + "</b> ETH available."
 
           .form-floating.mt-3.mb-1
             input#address.form-control(type='text' placeholder='Enter address' name='address')
@@ -52,5 +52,5 @@ html
           br
           .text-end
             button.btn.btn-outline-light
-              i.fa-brands.fa-bitcoin.me-2
+              i.fa-brands.fa-ethereum.me-2
               |  SEND
