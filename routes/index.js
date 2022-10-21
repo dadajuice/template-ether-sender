@@ -13,16 +13,16 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', async function (req, res) {
-    let btcAmount = req.body.amount;
+    let ethAmount = req.body.amount;
     let address = req.body.address;
 
-    if (btcAmount === undefined || btcAmount === "") {
+    if (ethAmount === undefined || ethAmount === "") {
         req.flash('error', "The amount to sent must be given.");
         res.redirect("/");
         return;
     }
 
-    if (isNaN(btcAmount)) {
+    if (isNaN(ethAmount)) {
         req.flash('error', "The amount must be numeric.");
         res.redirect("/");
         return;
@@ -34,20 +34,20 @@ router.post('/', async function (req, res) {
         return;
     }
 
-    // TODO: Test if the given BTC address is valid for the given network ...
+    // TODO: Test if the given ETH address is valid for the given network ...
 
-    sendBitcoin(address, btcAmount);
-    req.flash('success', btcAmount + " BTC sent successfully to " + address
+    sendEthereum(address, ethAmount);
+    req.flash('success', ethAmount + " ETH sent successfully to " + address
         + ". I may take up to few minutes before the transaction is completed.");
     res.redirect("/");
 });
 
 function getBalance(address) {
-    // TODO: Retrieve the real BTC balance for a given address
+    // TODO: Retrieve the real ETH balance for a given address
     return parseFloat("0").toFixed(8);
 }
 
-function sendBitcoin(toAddress, btcAmount) {
+function sendEthereum(toAddress, ethAmount) {
     // TODO: Proceed to do the real transfer ...
 }
 
