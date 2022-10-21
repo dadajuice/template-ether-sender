@@ -40,7 +40,11 @@ router.post('/', async function (req, res) {
         return;
     }
 
-    // TODO: Test if the given ETH address is valid for the given network ...
+    if (!Web3.utils.isAddress(address)) {
+        req.flash('error', "The recipient address is invalid. Make sure its on the ETH network.");
+        res.redirect("/");
+        return;
+    }
 
     sendEthereum(address, ethAmount);
     req.flash('success', ethAmount + " ETH sent successfully to " + address
