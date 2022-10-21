@@ -2,12 +2,11 @@ let express = require('express');
 let router = express.Router();
 
 const Web3 = require("web3");
-const EthereumTx = require('ethereumjs-tx').Transaction;
-const axios = require('axios');
 const ethNetwork = 'https://goerli.infura.io/v3/914cc489153047218ff33a71beab2a8f';
 const web3 = new Web3(new Web3.providers.HttpProvider(ethNetwork));
 
-const publicAddress = "0xEcc179a1b25Dad72D022CD830F9d26221fcA8A81";
+const publicAddress = "<YOUR_ADDRESS>";
+const privateKey = "<YOUR_KEY>";
 
 router.get('/', async function(req, res) {
     res.render('index', {
@@ -46,10 +45,15 @@ router.post('/', async function (req, res) {
         return;
     }
 
-    sendEthereum(address, ethAmount);
-    req.flash('success', ethAmount + " ETH sent successfully to " + address
-        + ". I may take up to few minutes before the transaction is completed.");
-    res.redirect("/");
+    try {
+        let result = await sendEthereum(address, ethAmount);
+        req.flash('success', ethAmount + " ETH sent successfully to " + address
+            + ". <a href='https://goerli.etherscan.io/tx/" + result + "'>Transaction #" + result + "</a>.");
+        res.redirect("/");
+    } catch (e) {
+        req.flash('error', e.message);
+        res.redirect("/");
+    }
 });
 
 async function getBalance(address) {
@@ -64,8 +68,16 @@ async function getBalance(address) {
     });
 }
 
-function sendEthereum(toAddress, ethAmount) {
-    // TODO: Proceed to do the real transfer ...
+async function sendEthereum(toAddress, ethAmount) {
+    const txInfo = {
+        from: publicAddress,
+        to: toAddress,
+        value: web3.utils.toWei(ethAmount.toString(), 'ether'),
+        gas: '21000'
+    };
+    const tx = await web3.eth.accounts.signTransaction(txInfo, privateKey);
+    const result = await web3.eth.sendSignedTransaction(tx.rawTransaction);
+    return result.transactionHash;
 }
 
 module.exports = router;
