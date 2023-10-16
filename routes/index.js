@@ -1,7 +1,8 @@
 let express = require('express');
 let router = express.Router();
 
-const publicAddress = "0xEcc179a1b25Dad72D022CD830F9d26221fcA8A81";
+const publicAddress = "<YOUR_PUBLIC_ADDRESS>";
+const privateKey = "<YOUR_PRIVATE_KEY>";
 
 router.get('/', function(req, res) {
     res.render('index', {
