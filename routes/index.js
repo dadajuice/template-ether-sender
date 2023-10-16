@@ -2,8 +2,8 @@ let express = require('express');
 let router = express.Router();
 
 const Web3 = require("web3");
-const ethNetwork = 'https://goerli.infura.io/v3/914cc489153047218ff33a71beab2a8f';
-const web3 = new Web3(new Web3.providers.HttpProvider(ethNetwork));
+const network = "https://sepolia.infura.io/v3/914cc489153047218ff33a71beab2a8f";
+const web3 = new Web3(new Web3.providers.HttpProvider(network));
 
 const publicAddress = "<YOUR_ADDRESS>";
 const privateKey = "<YOUR_KEY>";
@@ -39,16 +39,16 @@ router.post('/', async function (req, res) {
         return;
     }
 
-    if (!Web3.utils.isAddress(address)) {
+    if (!web3.utils.isAddress(address)) {
         req.flash('error', "The recipient address is invalid. Make sure its on the ETH network.");
         res.redirect("/");
         return;
     }
 
     try {
-        let result = await sendEthereum(address, ethAmount);
+        let txId = await sendEthereum(address, ethAmount);
         req.flash('success', ethAmount + " ETH sent successfully to " + address
-            + ". <a href='https://goerli.etherscan.io/tx/" + result + "'>Transaction #" + result + "</a>.");
+            + ". <a target='_blank' href='https://sepolia.etherscan.io/tx/" + txId + "'>Transaction #" + txId + "</a>.");
         res.redirect("/");
     } catch (e) {
         req.flash('error', e.message);
@@ -58,7 +58,7 @@ router.post('/', async function (req, res) {
 
 async function getBalance(address) {
     return new Promise((resolve, reject) => {
-        web3.eth.getBalance(address, async (err, result) => {
+        web3.eth.getBalance(address, (err, result) => {
             if (err) {
                 return reject(err);
             }
@@ -72,7 +72,7 @@ async function sendEthereum(toAddress, ethAmount) {
     const txInfo = {
         from: publicAddress,
         to: toAddress,
-        value: web3.utils.toWei(ethAmount.toString(), 'ether'),
+        value: web3.utils.toWei(ethAmount.toString(), "ether"),
         gas: '21000'
     };
     const tx = await web3.eth.accounts.signTransaction(txInfo, privateKey);
